@@ -1,0 +1,54 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: quirkshop-nginx-ingress
+  namespace: ingress-nginx
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/websocket-services: "heidi, janus"
+    # nginx.org/websocket-services: "heidi, janus"
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+
+    nginx.ingress.kubernetes.io/default-backend: client
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    cert-manager.io/acme-challenge-type: dns01
+spec:
+  backend:
+    serviceName: client
+    servicePort: 80
+  tls:
+    - hosts:
+        - quirkshop.org
+      secretName: production-ssl
+  rules:
+    - host: quirkshop.org
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: client
+              servicePort: 80
+          - path: /graphql
+            backend:
+              serviceName: server
+              servicePort: 5000
+          - path: /socket
+            backend:
+              serviceName: heidi
+              servicePort: 4000
+          - path: /janus-wss
+            backend:
+              serviceName: janus
+              servicePort: 8989
+          - path: /janus
+            backend:
+              serviceName: janus
+              servicePort: 8188
+          - path: /webhook
+            backend:
+              serviceName: server
+              servicePort: 5000

@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+     server:
+          image: gcr.io/quirkshop-1585189206879/server:latest
+          ports:
+               - "5000:5000"
+          env_file: .env
+          # volumes:
+          #   - /usr/src/app
+          command: "npm start server.js"
+     client:
+          image: gcr.io/quirkshop-1585189206879/client:latest
+          ports:
+               - "80:80"
+          # volumes:
+          #   - /usr/src/app
+          depends_on:
+               - server
+          # command: "yarn start"
+
+     janus:
+          image: gcr.io/quirkshop-1585189206879/janus:latest
+          ports:
+               - 8088:8088
+               - 8188:8188
+          # volumes:
+          #      - ./janus/etc:/opt/janus/etc/janus
+          command: "/opt/janus/bin/janus -S stun.l.google.com:19302"
+     heidi:
+          image: gcr.io/quirkshop-1585189206879/heidi:latest
+          ports:
+               - 4000:4000
+          depends_on:
+               - client
+               - server
+               - janus
+          command: "bin/heidi start"
+     # nginx:
+     #      image: gcr.io/quirkshop-1585189206879/nginx:latest
+     #      ports:
+     #           - 80:80
+     #      depends_on:
+     #           - client
+     #           - server
+     #           - janus
+     #           - heidi

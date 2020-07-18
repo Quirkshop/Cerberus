@@ -1,0 +1,89 @@
+body {
+	margin: 0px;
+	// font-family: 'Roboto', sans-serif;
+}
+
+@font-face {
+	font-family: "Nunito";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: local("Nunito Regular"), local("Nunito-Regular"),
+		url(https://fonts.gstatic.com/s/nunito/v11/XRXV3I6Li01BKofINeaBTMnFcQ.woff2)
+			format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+		U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+		U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* b612-regular - latin */
+@font-face {
+	font-family: "B612";
+	font-style: normal;
+	font-weight: 400;
+	src: url("./fonts/b612-v4-latin-regular.eot"); /* IE9 Compat Modes */
+	src: local("B612 Regular"), local("B612-Regular"),
+		url("./fonts/b612-v4-latin-regular.eot?#iefix")
+			format("embedded-opentype"),
+		/* IE6-IE8 */ url("./fonts/b612-v4-latin-regular.woff2")
+			format("woff2"),
+		/* Super Modern Browsers */ url("./fonts/b612-v4-latin-regular.woff")
+			format("woff"),
+		/* Modern Browsers */ url("./fonts/b612-v4-latin-regular.ttf")
+			format("truetype"),
+		/* Safari, Android, iOS */
+			url("./fonts/b612-v4-latin-regular.svg#B612") format("svg"); /* Legacy iOS */
+}
+/* b612-italic - latin */
+@font-face {
+	font-family: "B612";
+	font-style: italic;
+	font-weight: 400;
+	src: url("./fonts/b612-v4-latin-italic.eot"); /* IE9 Compat Modes */
+	src: local("B612 Italic"), local("B612-Italic"),
+		url("./fonts/b612-v4-latin-italic.eot?#iefix")
+			format("embedded-opentype"),
+		/* IE6-IE8 */ url("./fonts/b612-v4-latin-italic.woff2")
+			format("woff2"),
+		/* Super Modern Browsers */ url("./fonts/b612-v4-latin-italic.woff")
+			format("woff"),
+		/* Modern Browsers */ url("./fonts/b612-v4-latin-italic.ttf")
+			format("truetype"),
+		/* Safari, Android, iOS */
+			url("./fonts/b612-v4-latin-italic.svg#B612") format("svg"); /* Legacy iOS */
+}
+/* b612-700 - latin */
+@font-face {
+	font-family: "B612";
+	font-style: normal;
+	font-weight: 700;
+	src: url("./fonts/b612-v4-latin-700.eot"); /* IE9 Compat Modes */
+	src: local("B612 Bold"), local("B612-Bold"),
+		url("./fonts/b612-v4-latin-700.eot?#iefix")
+			format("embedded-opentype"),
+		/* IE6-IE8 */ url("./fonts/b612-v4-latin-700.woff2") format("woff2"),
+		/* Super Modern Browsers */ url("./fonts/b612-v4-latin-700.woff")
+			format("woff"),
+		/* Modern Browsers */ url("./fonts/b612-v4-latin-700.ttf")
+			format("truetype"),
+		/* Safari, Android, iOS */ url("./fonts/b612-v4-latin-700.svg#B612")
+			format("svg"); /* Legacy iOS */
+}
+/* b612-700italic - latin */
+@font-face {
+	font-family: "B612";
+	font-style: italic;
+	font-weight: 700;
+	src: url("./fonts/b612-v4-latin-700italic.eot"); /* IE9 Compat Modes */
+	src: local("B612 Bold Italic"), local("B612-BoldItalic"),
+		url("./fonts/b612-v4-latin-700italic.eot?#iefix")
+			format("embedded-opentype"),
+		/* IE6-IE8 */ url("./fonts/b612-v4-latin-700italic.woff2")
+			format("woff2"),
+		/* Super Modern Browsers */
+			url("./fonts/b612-v4-latin-700italic.woff") format("woff"),
+		/* Modern Browsers */ url("./fonts/b612-v4-latin-700italic.ttf")
+			format("truetype"),
+		/* Safari, Android, iOS */
+			url("./fonts/b612-v4-latin-700italic.svg#B612") format("svg"); /* Legacy iOS */
+}

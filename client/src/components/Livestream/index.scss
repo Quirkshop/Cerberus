@@ -1,0 +1,46 @@
+.Users {
+	// margin-top: 50px;
+}
+
+.Messages {
+	// margin-top: 500px;
+}
+
+.UserList {
+	border-style: solid;
+	border-width: 2px;
+	overflow: scroll;
+	max-height: 300px;
+	max-width: 280px;
+}
+
+.MessageList {
+	border-style: solid;
+	border-width: 2px;
+	overflow: scroll;
+	max-height: 300px;
+	max-width: 280px;
+}
+
+.Chat {
+	// margin-top: 550px;
+	margin-top: -70px;
+	margin-left: 1350px;
+	// display: flex;
+	// flex-direction: column;
+	// justify-content: flex-end;
+	// align-self: flex-end;
+}
+
+// .player-wrapper {
+// 	width: auto; // Reset width
+// 	height: auto; // Reset height
+//   }
+//   .react-player {
+// 	padding-top: 56.25%; // Percentage ratio for 16:9
+// 	position: relative; // Set to relative
+//   }
+  
+//   .react-player > div {
+// 	position: absolute; // Scaling will occur since parent is relative now
+//   }

@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-production
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: jack@quirkshop.org
+    privateKeySecretRef:
+      name: letsencrypt-production
+    solvers:
+      - dns01:
+          clouddns:
+            # The ID of the GCP project
+            project: quirkshop-1585189206879
+            # This is the secret used to access the service account
+            serviceAccountSecretRef:
+              name: clouddns
+              key: clouddns.key.json

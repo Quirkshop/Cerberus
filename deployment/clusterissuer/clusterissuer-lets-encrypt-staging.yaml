@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: letsencrypt-staging
+  namespace: ingress-nginx
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: jack@quirkshop.org
+    privateKeySecretRef:
+      name: letsencrypt-stag
+    dns01:
+      providers:
+        - name: clouddns
+          clouddns:
+            project: quirkshop-1585189206879
+            serviceAccountSecretRef:
+              name: clouddns
+              key: clouddns.key.json

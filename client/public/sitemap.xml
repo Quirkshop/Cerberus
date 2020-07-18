@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+   <url>
+
+      <loc>https://quirkshop.org/</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>1</priority>
+
+   </url>
+   <url>
+
+      <loc>https://quirkshop.org/browse</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>daily</changefreq>
+
+      <priority>1</priority>
+
+   </url>
+    <url>
+
+      <loc>https://quirkshop.org/about</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.5</priority>
+
+   </url>
+   <url>
+
+      <loc>https://quirkshop.org/host</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.8</priority>
+
+   </url>
+   <url>
+
+      <loc>https://quirkshop.org/signup</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.5</priority>
+
+   </url>
+   <url>
+
+      <loc>https://quirkshop.org/login</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.5</priority>
+
+   </url>
+   <url>
+
+      <loc>https://quirkshop.org/create</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.5</priority>
+
+   </url>
+   <url>
+
+      <loc>https://quirkshop.org/mycalendar</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.5</priority>
+
+   </url>
+   
+   <url>
+
+      <loc>https://quirkshop.org/support</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.4</priority>
+
+   </url>
+   <url>
+
+      <loc>https://quirkshop.org/terms</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.4</priority>
+
+   </url>
+    <url>
+
+      <loc>https://quirkshop.org/browse/9cba5b80-a388-11ea-9eed-8ba73719936f</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.8</priority>
+
+   </url>
+   <url>
+
+      <loc>https://quirkshop.org/browse/f81fc620-9d5e-11ea-9060-690ef53af825</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.8</priority>
+
+   </url>
+    <url>
+
+      <loc>https://quirkshop.org/browse/abd83800-9d50-11ea-9060-690ef53af825</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.8</priority>
+
+   </url>
+    <url>
+
+      <loc>https://quirkshop.org/browse/8daa0440-9d22-11ea-bd8b-01ef439f0fdb</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.8</priority>
+
+   </url>
+    <url>
+
+      <loc>https://quirkshop.org/browse/b2278d00-9ac6-11ea-ae29-bd10af9ec910</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.8</priority>
+
+   </url>
+    <url>
+
+      <loc>https://quirkshop.org/browse/effd64d0-9ac4-11ea-ae29-bd10af9ec910</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.8</priority>
+
+   </url>
+    <url>
+
+      <loc>https://quirkshop.org/browse/63dd7720-9ac3-11ea-ae29-bd10af9ec910</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.8</priority>
+
+   </url>
+  <url>
+
+      <loc>https://quirkshop.org/browse/eba583c0-9ac1-11ea-ae29-bd10af9ec910</loc>
+
+      <lastmod>2020-06-15</lastmod>
+
+      <changefreq>weekly</changefreq>
+
+      <priority>0.8</priority>
+
+   </url>
+
+</urlset> 

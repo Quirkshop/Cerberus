@@ -1,0 +1,62 @@
+# steps:
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: ['build', '-t', 'gcr.io/$PROJECT_ID/${_IMAGE_NAME}:${_VERSION}', '.']
+
+# - name: gcr.io/$PROJECT_ID/docker-compose
+#   args: ['up', '-d']
+
+# - name: gcr.io/cloud-builders/docker
+#   args: ['tag', 'gcr.io/$PROJECT_ID/docker-compose:latest', 'gcr.io/$PROJECT_ID/${_IMAGE_NAME}:${_VERSION}']
+#   args: ['tag', ${_IMAGE_NAME}, 'gcr.io/$PROJECT_ID/${_IMAGE_NAME}']
+#   args: ['push', 'gcr.io/$PROJECT_ID/${_IMAGE_NAME}:${_VERSION}']
+# tags: ['gcr.io/$PROJECT_ID/${_IMAGE_NAME}/${_VERSION}']
+# tags: ['${_VERSION}']
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      [
+        "build",
+        "-t",
+        "gcr.io/$PROJECT_ID/server:v0.51",
+        "-f",
+        "./server/Dockerfile",
+        ".",
+      ]
+  - name: gcr.io/cloud-builders/docker
+    args:
+      [
+        "build",
+        "-t",
+        "gcr.io/$PROJECT_ID/client:v0.63",
+        "-f",
+        "./client/Dockerfile",
+        ".",
+      ]
+  - name: gcr.io/cloud-builders/docker
+    args:
+      [
+        "build",
+        "-t",
+        "gcr.io/$PROJECT_ID/janus:v0.46",
+        "-f",
+        "./janus/Dockerfile",
+        ".",
+      ]
+  - name: gcr.io/cloud-builders/docker
+    args:
+      [
+        "build",
+        "-t",
+        "gcr.io/$PROJECT_ID/heidi:v0.44",
+        "-f",
+        "./heidi/dockerfile",
+        ".",
+      ]
+
+images:
+  - gcr.io/$PROJECT_ID/server
+  - gcr.io/$PROJECT_ID/client
+  - gcr.io/$PROJECT_ID/janus
+  - gcr.io/$PROJECT_ID/heidi
+
+timeout: 1200s

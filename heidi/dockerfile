@@ -1,0 +1,42 @@
+# Alias this container as builder:
+FROM bitwalker/alpine-elixir-phoenix:latest as builder
+
+WORKDIR /heidi
+
+ENV MIX_ENV=prod
+
+# Umbrella
+# Copy mix files so we use distillery:
+COPY ./heidi/mix.exs ./heidi/mix.lock ./
+COPY ./heidi/config config
+
+COPY /heidi/apps apps
+
+RUN mix do deps.get, deps.compile
+
+WORKDIR /heidi
+COPY ./heidi/rel rel
+RUN MIX_ENV=prod mix release
+
+FROM alpine:3.9
+
+RUN apk upgrade --no-cache && \
+    apk add --no-cache bash openssl
+# we need bash and openssl for Phoenix
+
+EXPOSE 4000
+
+ENV PORT=4000 \
+    MIX_ENV=prod \
+    REPLACE_OS_VARS=true \
+    SHELL=/bin/bash
+
+WORKDIR /heidi
+
+COPY --from=builder /heidi/_build/prod/rel/heidi/ .
+
+RUN chown -R root ./releases
+
+USER root
+
+CMD ["bin/heidi", "start"]

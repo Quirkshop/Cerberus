@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file deploy.yaml convert
+    kompose.version: 1.21.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: client
+  name: client
+  namespace: ingress-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: client
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file deploy.yaml convert
+        kompose.version: 1.21.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.service: client
+    spec:
+      containers:
+        - args:
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: node-env3
+                  key: NODEENV
+            #   - name: NODE_ENV
+            #     valueFrom:
+            #          secretKeyRef:
+            #               name: api-key
+            #               key: API_KEY
+          image: gcr.io/quirkshop-1585189206879/client:v0.63
+          imagePullPolicy: Always
+          name: client
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+
+status: {}

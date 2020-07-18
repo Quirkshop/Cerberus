@@ -1,0 +1,221 @@
+image: docker:latest
+
+stages:
+  - test
+  - build
+  - deploy
+
+test:
+  stage: test
+  script: echo "Running tests"
+  only:
+    - staging
+
+build:
+  stage: build
+  image: google/cloud-sdk
+  services:
+    - docker:dind
+
+  script:
+    - echo "Building Quirkshop"
+    - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud builds submit . --config=./cloudbuild.yaml
+    # --substitutions _VERSION=$(echo $CI_COMMIT_SHA | cut -c8-25)
+  only:
+    - staging
+    - master
+
+deploy_review:
+  stage: deploy
+  image: google/cloud-sdk
+  script:
+    - echo "Deploy to Staging"
+    - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud container clusters get-credentials staging --zone us-west1-a --project quirkshop-1585189206879
+    - config_kubernetes_staging
+
+    - kubectl apply -f ./staging/server-staging.yaml
+    - kubectl apply -f ./staging/server-staging-service.yaml
+
+    - kubectl apply -f ./staging/client-staging.yaml
+    - kubectl apply -f ./staging/client-service.yaml
+
+    - kubectl apply -f ./staging/janus-staging.yaml
+    - kubectl apply -f ./staging/janus-service.yaml
+
+    - kubectl apply -f ./staging/heidi-staging.yaml
+    - kubectl apply -f ./staging/heidi-service.yaml
+
+    - kubectl apply -f ./staging/ingress.yaml
+
+    - kubectl rollout status -f ./staging/server-staging.yaml
+    - kubectl rollout status -f ./staging/client-staging.yaml
+    - kubectl rollout status -f ./staging/janus-staging.yaml
+    - kubectl rollout status -f ./staging/heidi-staging.yaml
+
+  environment:
+    name: staging
+    url: https://staging.quirkshop.org
+    on_stop: stop_review
+  only:
+    - staging
+  # except:
+  #     - jack-seeburger/gcloud
+
+stop_review:
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "Move to Deployment"
+    # - kubectl version
+    # - kubectl delete ing -l app=$CI_ENVIRONMENT_SLUG
+    # - kubectl delete all -l app=$CI_ENVIRONMENT_SLUG
+    # - kubectl delete pod,service baz foo
+  when: manual
+  environment:
+    name: staging
+    action: stop
+  only:
+    - staging
+
+# deploy_stage:
+#     stage: deploy
+#     image: google/cloud-sdk
+#     script:
+#         - echo "Deploy to staging server"
+#         - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json
+#         - gcloud auth activate-service-account --key-file gcloud-service-key.json
+#         - gcloud container clusters get-credentials cluster-2 --zone us-west1-a --project quirkshop-1585189206879
+#         - config_kubernetes
+
+#         - kubectl apply -f server-deployment.yaml
+#         - kubectl apply -f server-service.yaml
+
+#         - kubectl apply -f client-deployment.yaml
+#         - kubectl apply -f client-service.yaml
+#         - kubectl apply -f env-configmap.yaml
+
+#         - kubectl apply -f janus-deployment.yaml
+#         - kubectl apply -f janus-service.yaml
+
+#         - kubectl apply -f heidi-deployment.yaml
+#         - kubectl apply -f heidi-service.yaml
+
+#         - kubectl apply -f nginx-deployment.yaml
+#         - kubectl apply -f nginx-service.yaml
+
+#         - kubectl apply -f ingress.yaml
+
+#         - kubectl rollout status -f server-deployment.yaml
+#         - kubectl rollout status -f client-deployment.yaml
+#         - kubectl rollout status -f janus-deployment.yaml
+#         - kubectl rollout status -f heidi-deployment.yaml
+#         - kubectl rollout status -f nginx-deployment.yaml
+#         - kubectl get all,ing -l app=$CI_PROJECT_NAME-$CI_ENVIRONMENT_SLUG
+#     environment:
+#         name: staging
+#         url: subdomain.quirkshop.org
+#     only:
+#         - jack-seeburger/gcloud
+
+deploy:
+  stage: deploy
+  image: google/cloud-sdk
+  script:
+    - echo "Deploy to production server"
+    - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud container clusters get-credentials cluster-2 --zone us-west1-a --project quirkshop-1585189206879
+    - config_kubernetes
+    - kubectl apply -f ./deployment/server-production.yaml
+    - kubectl apply -f ./deployment/server-prod-service.yaml
+
+    - kubectl apply -f ./deployment/client-deployment.yaml
+    - kubectl apply -f ./deployment/client-service.yaml
+    # - kubectl apply -f ./deployment/env-configmap.yaml
+    - kubectl apply -f ./deployment/janus-deployment.yaml
+    - kubectl apply -f ./deployment/janus-service.yaml
+    - kubectl apply -f ./deployment/heidi-deployment.yaml
+    - kubectl apply -f ./deployment/heidi-service.yaml
+    # - kubectl apply -f nginx-deployment.yaml
+    # - kubectl apply -f nginx-service.yaml
+    - kubectl apply -f ./deployment/ingress.yaml
+    # - kubectl rollout status -f ./deployment/client-deployment.yaml
+    # - kubectl rollout status -f ./deployment/janus-deployment.yaml
+    # - kubectl rollout status -f ./deployment/heidi-deployment.yaml
+
+  environment:
+    name: production
+    url: https://quirkshop.org
+  only:
+    - master
+
+# Custom Functions -------------------------------------------------------
+.custom_functions: &custom_functions |
+  export VERSION=$(echo $CI_COMMIT_SHA | cut -c8-25)
+  export SECRET_NAME=tls-$CI_PROJECT_NAME-$CI_ENVIRONMENT_SLUG
+  export REPLICAS=3
+  export TRACK=stable
+        
+  function config_kubernetes() {
+      kubectl config set-cluster $KUBE_NAME --server="$KUBE_URL" --insecure-skip-tls-verify=true
+      kubectl config set-credentials cluster-admin --username="$KUBE_USER" --password="$KUBE_PASSWORD"
+      kubectl config set-context default --cluster=$KUBE_NAME --user=cluster-admin
+      kubectl config use-context default
+  }
+
+  function config_kubernetes_staging() {
+      kubectl config set-cluster $KUBE_NAME_STAGING --server="$KUBE_URL_STAGING" --insecure-skip-tls-verify=true
+      kubectl config set-credentials cluster-admin --username="$KUBE_USER_STAGING" --password="$KUBE_PASSWORD_STAGING"
+      kubectl config set-context default --cluster=$KUBE_NAME_STAGING --user=cluster-admin
+      kubectl config use-context default
+  }
+          
+  function create_ssl_secret() {
+      ## Check if we are using SSL
+      if [[ "$USE_SSL" != "True" ]]; then
+          return
+      fi
+            
+      ## Check if secret name already exists
+      if [[ $SECRET_NAME == $(kubectl get secret $SECRET_NAME -o jsonpath="{.metadata.name}") ]]; then 
+          kubectl delete secret $SECRET_NAME
+      fi
+        
+      kubectl create secret generic $SECRET_NAME --from-file=tls.key=ssl_certs/privkey.pem --from-file=tls.crt=ssl_certs/fullchain.pem
+  }
+            
+  function create_deployment_files() {
+      ## Deployment file substitutions
+      #sed 's/_AWS_ACCESS_KEY_/'"$AWS_ACCESS_KEY"'/g; s/_AWS_BUCKET_NAME_/'"$AWS_BUCKET_NAME"'/g; s/_AWS_REGION_/'"$AWS_REGION"'/g; s/_AWS_SECRET_ACCESS_KEY_/'"$AWS_SECRET_ACCESS_KEY"'/g;' env-configmap.yaml > env-configmap.yaml;
+      
+     
+      
+      ## Ingress file substitutions
+      # if [[ "$USE_SSL" != "True" ]]; then
+      sed 's/_APP_NAME_/'"$CI_PROJECT_NAME"'/g; s/_CI_ENVIRONMENT_SLUG_/'"$CI_ENVIRONMENT_SLUG"'/g; s/_MY_DOMAIN_/'"$MY_DOMAIN"'/g;' kubernetes.tpl.ingress.yaml > ingress.yaml;
+      # else
+      #     sed 's/_APP_NAME_/'"$CI_PROJECT_NAME"'/g; s/_CI_ENVIRONMENT_SLUG_/'"$CI_ENVIRONMENT_SLUG"'/g; s/_MY_DOMAIN_/'"$MY_DOMAIN"'/g;' kubernetes.tpl.ingress-ssl.yaml > ingress.yaml;
+      # fi
+            
+    
+  }
+        
+  function apply_and_rollout() {
+      cat deployment.yaml
+      cat service.yaml
+      cat ingress.yaml
+      kubectl apply -f deployment.yaml
+      kubectl apply -f service.yaml
+      kubectl apply -f ingress.yaml
+      kubectl rollout status -f deployment.yaml
+      kubectl get all,ing -l app=$CI_PROJECT_NAME-$CI_ENVIRONMENT_SLUG
+  }
+
+before_script:
+  - *custom_functions

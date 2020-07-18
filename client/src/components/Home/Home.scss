@@ -1,0 +1,50 @@
+  section {
+    padding: 48px 0;
+    min-width: 100%;
+  }
+
+  .Background-Section{
+    background-color: #26C6DA;
+  }
+
+
+  .Welcome-Text{
+    background-color: white;
+    padding: 8px;;
+    margin-bottom: 16px;;
+  }
+
+  .Welcome-Text-Container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .Hero-Button-Container{
+    display: flex;
+    flex-direction: row;
+    margin-top: 16px;
+
+    #Button{
+      margin-left: 10px;;
+    }
+    
+  }
+  
+  #hero {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  #hero .container {
+    height: 80vh;
+    min-width: max-content;
+    display: flex;
+    vertical-align: middle;
+  }
+  
+  #features .material-icons {
+    font-size: 50px;
+  }
